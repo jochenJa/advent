@@ -74,3 +74,23 @@ echo "\nday 3 - test 2 : ". count(array_unique(array_merge(
             $map_asText($map_position($map_direction($santa))),
             $map_asText($map_position($map_direction($robo)))
         )));
+
+echo "\n---------------------------------------------\n";
+
+
+// DAY 4
+
+function findPositiveNumber($x, $part) {
+    $hash = md5($part . $x);
+    return (preg_match('/^00000/', $hash))
+        ? $x
+        : findPositiveNumber(++$x, $part)
+    ;
+};
+
+$positive = findPositiveNumber(1, data_day4());
+var_dump(md5(data_day4() . $positive));
+echo "\nday 4 - test 1 : ". $positive;
+
+
+
