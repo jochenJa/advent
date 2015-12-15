@@ -80,7 +80,8 @@ echo "\n---------------------------------------------\n";
 
 // DAY 4
 
-function findPositiveNumber($x, $part) {
+$part = data_day4();
+function findPositiveNumber ($x, $part) {
     $hash = md5($part . $x);
     return (preg_match('/^00000/', $hash))
         ? $x
@@ -89,8 +90,15 @@ function findPositiveNumber($x, $part) {
 };
 
 $positive = findPositiveNumber(1, data_day4());
-var_dump(md5(data_day4() . $positive));
 echo "\nday 4 - test 1 : ". $positive;
 
+// recursive approach aint working for such a high iteration.
+$x = 1;
+for(; $x <= 10000000; $x++) {
+    $hash = md5($part . $x);
+    if(preg_match('/^000000/', $hash)) break;
+}
+
+echo "\nday 4 - test 2 : ". $x;
 
 
