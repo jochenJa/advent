@@ -58,7 +58,7 @@ $map_asText = function($positions) {
     );
 };
 
-echo "\nday 3 - test 1 : ". count(array_unique($map_asText($map_position($map_direction(data_day3())))));
+//echo "\nday 3 - test 1 : ". count(array_unique($map_asText($map_position($map_direction(data_day3())))));
 
 $splitAlternate = function($cos) {
     $alternate = array_chunk($cos, 2);
@@ -69,11 +69,11 @@ $splitAlternate = function($cos) {
     ];
 };
 
-list($santa, $robo) = $splitAlternate(data_day3());
-echo "\nday 3 - test 2 : ". count(array_unique(array_merge(
-            $map_asText($map_position($map_direction($santa))),
-            $map_asText($map_position($map_direction($robo)))
-        )));
+//list($santa, $robo) = $splitAlternate(data_day3());
+//echo "\nday 3 - test 2 : ". count(array_unique(array_merge(
+//            $map_asText($map_position($map_direction($santa))),
+//            $map_asText($map_position($map_direction($robo)))
+//        )));
 
 echo "\n---------------------------------------------\n";
 
@@ -89,16 +89,21 @@ function findPositiveNumber ($x, $part) {
     ;
 };
 
-$positive = findPositiveNumber(1, data_day4());
-echo "\nday 4 - test 1 : ". $positive;
+//$positive = findPositiveNumber(1, data_day4());
+//echo "\nday 4 - test 1 : ". $positive;
 
 // recursive approach aint working for such a high iteration.
-$x = 1;
-for(; $x <= 10000000; $x++) {
-    $hash = md5($part . $x);
-    if(preg_match('/^000000/', $hash)) break;
-}
+//$x = 1;
+//for(; $x <= 10000000; $x++) {
+//    $hash = md5($part . $x);
+//    if(preg_match('/^000000/', $hash)) break;
+//}
 
-echo "\nday 4 - test 2 : ". $x;
+//echo "\nday 4 - test 2 : ". $x;
 
+echo "\n---------------------------------------------\n";
 
+// filter naughty ones /(ab|cd|pq|xy)/
+$withoutNaughtyOnes = array_filter(data_day5(), function($txt) { return ! preg_match('/(ab|cd|pq|xy)/', $txt); });
+$atleastThreeVowels = array_filter($withoutNaughtyOnes, function($txt) { return preg_match('/(\S*[aeiou]\S*){3,}/', $txt); });
+echo "\nday 5 - test 1 : ". count(array_filter($atleastThreeVowels, function($txt) { return preg_match('/(\w)\1/', $txt); }));
