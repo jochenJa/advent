@@ -107,3 +107,9 @@ echo "\n---------------------------------------------\n";
 $withoutNaughtyOnes = array_filter(data_day5(), function($txt) { return ! preg_match('/(ab|cd|pq|xy)/', $txt); });
 $atleastThreeVowels = array_filter($withoutNaughtyOnes, function($txt) { return preg_match('/(\S*[aeiou]\S*){3,}/', $txt); });
 echo "\nday 5 - test 1 : ". count(array_filter($atleastThreeVowels, function($txt) { return preg_match('/(\w)\1/', $txt); }));
+
+$repeatingLetterWithOneInBetween = array_filter(data_day5(), function($txt) { return preg_match('/(\w).\1/', $txt); });
+echo "\nday 5 - test 2 : ". count(array_filter($repeatingLetterWithOneInBetween, function($txt) { return preg_match('/(\w{2,})(?=.*?\1)/', $txt); }));
+
+echo "\n---------------------------------------------\n";
+
