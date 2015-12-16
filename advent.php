@@ -113,3 +113,42 @@ echo "\nday 5 - test 2 : ". count(array_filter($repeatingLetterWithOneInBetween,
 
 echo "\n---------------------------------------------\n";
 
+
+// DAY 16 - aunt sue
+
+// detect a criteria in a string
+$detect = function($criterium, $number, $text) {
+    $matches = [];
+    if(! preg_match('/'.$criterium.': (\d+)/', $text, $matches)) return true;
+
+    return $number ==(integer)end($matches);
+};
+
+//which aunt sue meets all criteria
+$criteria = [
+    ['children', 3],
+    ['cats', 7],
+    ['samoyeds', 2],
+    ['pomeranians', 3],
+    ['akitas', 0],
+    ['vizslas', 0],
+    ['goldfish', 5],
+    ['trees', 3],
+    ['cars', 2],
+    ['perfumes', 1]
+];
+
+$criteria = array_map(
+    function($c) use ($detect) { return function($text) use ($detect, $c){ return $detect($c[0], $c[1], $text); }; },
+    $criteria
+);
+
+$validSues = array_reduce(
+    $criteria,
+    function($filteredSues, $criterium) { return array_filter($filteredSues, $criterium); },
+    data_day16()
+);
+
+var_dump($validSues);
+
+
