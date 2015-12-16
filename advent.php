@@ -117,38 +117,67 @@ echo "\n---------------------------------------------\n";
 // DAY 16 - aunt sue
 
 // detect a criteria in a string
-$detect = function($criterium, $number, $text) {
+$detect = function($criterium, $number, $operation, $text) {
     $matches = [];
     if(! preg_match('/'.$criterium.': (\d+)/', $text, $matches)) return true;
 
-    return $number ==(integer)end($matches);
+    return $operation($number, (integer)end($matches));
 };
+
+$callables = function($criteria) use ($detect) {
+    return array_map(
+        function($c) use ($detect) { return function($text) use ($detect, $c){ return $detect($c[0], $c[1], $c[2], $text); }; },
+        $criteria
+    );
+};
+
+$equals = function($a, $b) { return $a == $b; };
 
 //which aunt sue meets all criteria
 $criteria = [
-    ['children', 3],
-    ['cats', 7],
-    ['samoyeds', 2],
-    ['pomeranians', 3],
-    ['akitas', 0],
-    ['vizslas', 0],
-    ['goldfish', 5],
-    ['trees', 3],
-    ['cars', 2],
-    ['perfumes', 1]
+    ['children', 3, $equals],
+    ['cats', 7, $equals],
+    ['samoyeds', 2, $equals],
+    ['pomeranians', 3, $equals],
+    ['akitas', 0, $equals],
+    ['vizslas', 0, $equals],
+    ['goldfish', 5, $equals],
+    ['trees', 3, $equals],
+    ['cars', 2, $equals],
+    ['perfumes', 1, $equals]
 ];
 
-$criteria = array_map(
-    function($c) use ($detect) { return function($text) use ($detect, $c){ return $detect($c[0], $c[1], $text); }; },
-    $criteria
-);
-
 $validSues = array_reduce(
-    $criteria,
+    $callables($criteria),
     function($filteredSues, $criterium) { return array_filter($filteredSues, $criterium); },
     data_day16()
 );
 
-var_dump($validSues);
+echo "\nday 16 - test 1 : ". reset($validSues);
+
+$greater = function($a, $b) { return $a > $b; };
+$lesser = function($a, $b) { return $a < $b; };
+
+//which aunt sue meets all criteria
+$criteria = [
+    ['children', 3, $equals],
+    ['cats', 7, $lesser],
+    ['samoyeds', 2, $equals],
+    ['pomeranians', 3, $greater],
+    ['akitas', 0, $equals],
+    ['vizslas', 0, $equals],
+    ['goldfish', 5, $greater],
+    ['trees', 3, $lesser],
+    ['cars', 2, $equals],
+    ['perfumes', 1, $equals]
+];
+
+$validSues = array_reduce(
+    $callables($criteria),
+    function($filteredSues, $criterium) { return array_filter($filteredSues, $criterium); },
+    data_day16()
+);
+
+echo "\nday 16 - test 2 : ". reset($validSues);
 
 
