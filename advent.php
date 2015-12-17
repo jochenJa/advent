@@ -180,4 +180,49 @@ $validSues = array_reduce(
 
 echo "\nday 16 - test 2 : ". reset($validSues);
 
+echo "\n---------------------------------------------\n";
+
+
+// DAY 17 - filling containers
+
+// build every possible combo from elements in array , filter combo = X
+
+function asText($arr) { return sprintf('[%s]=>%s', implode('|', $arr), array_sum($arr)); }
+
+function removeHigher($number, $arr) { return array_filter($arr, function($x) use ($number) { return $x <= $number; }); }
+$data = [20,15, 10, 5, 5];
+
+//order possible sizes
+rsort($data);
+
+$combos = array_map(
+    function($x) use ($data) {
+        $combo = [];
+        unset($data[array_search($x, $data)]);
+        var_dump($data);
+
+        $find = 25;
+        while(array_sum($combo) < $x || count($data))
+        {
+            $next = array_shift($data);
+
+            if ($find < $next) continue;
+
+            $find -= $next;
+            $combo[] = $next;
+            //var_dump(asText($combo), asText($data));
+
+            if (!$find) return $combo;
+        }
+    },
+    array_unique($data)
+);
+var_dump('found: ', implode(' ',array_map(function($combo) { return asText($combo);}, $combos)));
+
+
+$combo = 0;
+echo "\nday 17 - test 1 : " . $combo;
+
+
+
 
