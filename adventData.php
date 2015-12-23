@@ -2516,3 +2516,24 @@ Sue 497: akitas: 8, trees: 2, perfumes: 6
 Sue 498: akitas: 1, trees: 1, samoyeds: 4
 Sue 499: cars: 0, akitas: 5, vizslas: 3
 Sue 500: cats: 2, goldfish: 9, children: 8'));}
+
+function data_day17() { return explode(PHP_EOL, "33
+14
+18
+20
+45
+35
+16
+35
+1
+13
+18
+13
+50
+44
+48
+6
+24
+41
+30
+42");};

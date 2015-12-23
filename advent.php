@@ -185,43 +185,39 @@ echo "\n---------------------------------------------\n";
 
 // DAY 17 - filling containers
 
-// build every possible combo from elements in array , filter combo = X
+function asText($arr) { return sprintf('[%s]', implode('|', $arr)); }
 
-function asText($arr) { return sprintf('[%s]=>%s', implode('|', $arr), array_sum($arr)); }
+$data = data_day17();
+//$data = [5, 10, 5, 20, 15, 12, 8, 6, 4, 2];
+$expectedSum = 150;
 
-function removeHigher($number, $arr) { return array_filter($arr, function($x) use ($number) { return $x <= $number; }); }
-$data = [20,15, 10, 5, 5];
+function findcombos($expectedSum, $arr, &$combos, &$ex)
+{
+    $x = array_sum($arr) - $expectedSum;
 
-//order possible sizes
-rsort($data);
+    if($x > 0) {
+        foreach(array_filter($arr) as $index => $v) {
+            $sub = $arr;
+            $sub[$index] = 0;
 
-$combos = array_map(
-    function($x) use ($data) {
-        $combo = [];
-        unset($data[array_search($x, $data)]);
-        var_dump($data);
+            if(isset($ex[asText($arr)])) return;
 
-        $find = 25;
-        while(array_sum($combo) < $x || count($data))
-        {
-            $next = array_shift($data);
-
-            if ($find < $next) continue;
-
-            $find -= $next;
-            $combo[] = $next;
-            //var_dump(asText($combo), asText($data));
-
-            if (!$find) return $combo;
+            findcombos($expectedSum, $sub, $combos, $ex);
         }
-    },
-    array_unique($data)
-);
-var_dump('found: ', implode(' ',array_map(function($combo) { return asText($combo);}, $combos)));
+    } elseif($x == 0) $combos[asText($arr)] = count(array_filter($arr));
 
+    $ex[asText($arr)] = 0;
+}
 
-$combo = 0;
-echo "\nday 17 - test 1 : " . $combo;
+rsort($data);
+$combo = [];
+$excluded = [];
+findcombos($expectedSum, $data, $combo, $excluded);
+echo "\nday 17 - test 1 : " . count($combo);
+
+$grouped = array_count_values($combo);
+ksort($grouped);
+echo "\nday 17 - test 2 : " . reset($grouped);
 
 
 
