@@ -185,7 +185,7 @@ echo "\n---------------------------------------------\n";
 
 // DAY 17 - filling containers
 
-function asText($arr) { return sprintf('[%s]', implode('|', $arr)); }
+function asText($arr) { return sprintf('%s : [%s]'.PHP_EOL, array_sum($arr), implode('|', $arr)); }
 
 $data = data_day17();
 //$data = [5, 10, 5, 20, 15, 12, 8, 6, 4, 2];
@@ -212,13 +212,39 @@ function findcombos($expectedSum, $arr, &$combos, &$ex)
 rsort($data);
 $combo = [];
 $excluded = [];
-findcombos($expectedSum, $data, $combo, $excluded);
-echo "\nday 17 - test 1 : " . count($combo);
+//findcombos($expectedSum, $data, $combo, $excluded);
+//echo "\nday 17 - test 1 : " . count($combo);
 
-$grouped = array_count_values($combo);
-ksort($grouped);
-echo "\nday 17 - test 2 : " . reset($grouped);
+//$grouped = array_count_values($combo);
+//ksort($grouped);
+//echo "\nday 17 - test 2 : " . reset($grouped);
 
 
+// DAY 20
 
+$presentsDelivered = 33100000;
+$sumOfElves =  function($presentsDelivered) { return $presentsDelivered / 10; };
+
+
+$find = function($x) {
+    $last = $x;
+    $sum = 0;
+    for($i = 1; $i < $last; $i++) {
+        if($x % $i == 0) {
+            $sum += $i + ($last = $x/$i);
+            //echo $i.','.$last.'|';
+        }
+    }
+
+    if($last == $i) $sum -= $i;
+
+    //echo PHP_EOL;
+    return $sum;
+};
+
+$end = $sumOfElves($presentsDelivered);
+//  result is good , but bad solution : scripts runs to long made an educated guess to skip numbers.
+$x = 770000;
+do { $numbers = $find(++$x); echo $x.' => '.$numbers.PHP_EOL;} while($numbers < $end);
+echo "\nday 20 - test 1 : " . $x;
 
