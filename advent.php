@@ -230,6 +230,8 @@ $find = function($x) {
     $last = $x;
     $sum = 0;
     for($i = 1; $i < $last; $i++) {
+        // without this runs takes way to long to find the solution
+        if($i > 25 && $sum < $x * 2) return 0;
         if($x % $i == 0) {
             $sum += $i + ($last = $x/$i);
             //echo $i.','.$last.'|';
@@ -243,8 +245,34 @@ $find = function($x) {
 };
 
 $end = $sumOfElves($presentsDelivered);
-//  result is good , but bad solution : scripts runs to long made an educated guess to skip numbers.
-$x = 770000;
+$x = 1;
 do { $numbers = $find(++$x); echo $x.' => '.$numbers.PHP_EOL;} while($numbers < $end);
 echo "\nday 20 - test 1 : " . $x;
+
+$presentsDelivered = 33100000;
+$sumOfElves =  function($presentsDelivered) { return $presentsDelivered / 11; };
+
+
+$find = function($x) {
+    $last = $x;
+    $sum = 0;
+    for($i = 1; $i < $last; $i++) {
+        if($i > 100 && $sum < $x * 2) return 0;
+        if($x % $i == 0) {
+            $sum += $i + ($last = $x/$i);
+            echo $i.','.$last.'|';
+        }
+    }
+
+    if($last == $i) $sum -= $i;
+
+    echo PHP_EOL;
+    return $sum;
+};
+
+$end = $sumOfElves($presentsDelivered);
+//  result is good , but bad solution : scripts runs to long made an educated guess to skip numbers.
+$x = 770000;
+//do { $numbers = $find(++$x); echo $x.' => '.$numbers.PHP_EOL;} while($numbers < $end);
+echo "\nday 20 - test 2 : " . $x;
 
